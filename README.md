@@ -24,8 +24,8 @@ PHP (Symfony), Bootstrap
 
 ### Functionalites
 
--Allows user to create an account.
--Browse a recipes made by other users.
--Add their own recipe.
+-Allows user to create an account.  
+-Browse a recipes made by other users.  
+-Add their own recipe.  
 -Edit or delete recipes made by them.
 
