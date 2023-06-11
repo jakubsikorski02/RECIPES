@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Recipes
+{% endblock %}
+
+{% block body %}
+    <div class="mx-auto">
+    <h1>
+        {{recipe.name}}
+    </h1>
+
+    <img src="{{ recipe.imagePath }}" alt="imagePicture" class="img-fluid bd-placeholder-img">
+
+    <h3>Ingridients:</h3>
+    <p>
+        {{recipe.ingridients}}
+    </p>
+    <h3>
+        How to:
+    </h3>
+    <p>
+        {{recipe.howTo}}
+    </p>
+
+
+    </div>
+    
+{% endblock %}

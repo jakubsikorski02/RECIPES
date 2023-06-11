@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    {{ form_start(form, {'attr': {'class': 'mx-2 mt-2'}}) }}
+  <div class="mb-3 ml-2">
+
+
+        {{ form_row(form.name) }}
+
+    </div>
+    <div class="mb-3 ml-2">
+        {{ form_row(form.ingridients) }}
+    </div>
+    <div class="mb-3 ml-2">
+        {{ form_row(form.howTo) }}
+    </div>
+        <div class="mb-3 ml-2">
+        {{ form_row(form.imagePath) }}
+    </div>
+    {{ form_widget(form) }}
+    
+    <button class="btn btn-success" type="submit">
+        CREATE
+    </button>
+
+    {{ form_end(form) }}
+{% endblock %}

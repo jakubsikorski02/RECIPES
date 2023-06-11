@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Recipes
+{% endblock %}
+
+{% block body %}
+
+	<div class="container d-flex align-items-center justify-content-center">
+		<h1>Recipes</h1>
+  </div>
+
+
+		<div class="container d-flex align-items-center justify-content-center">
+			<a class="mb-2 mt-2 btn btn-success" href="recipes/create">
+				Create your recipe!
+			</a>
+		</div>
+
+		<div class="row mx-auto">
+
+			{% for recipe in recipes %}
+				<div class="row">
+					<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div
+							class="col p-4 d-flex flex-column">
+							{# <strong class="d-inline-block mb-2 text-primary">World</strong> #}
+							<h2 class="mb-2">{{ recipe.name }}</h2>
+							{# <div class="mb-1 text-muted">Nov 12</div> #}
+
+							<h4>Ingredients</h4>
+							<p class="card-text mb-auto">{{recipe.ingridients}}</p>
+							<h4>How to</h4>
+
+							<p class="card-text mb-auto">{{recipe.howTo}}</p>
+
+							<a href="recipes/{{ recipe.id }}" class="stretched-link">Continue reading</a>
+						</div>
+						<div class="col-auto d-none d-lg-block">
+
+							<img src="{{ recipe.imagePath }}" alt="imagePicture" class="img-fluid bd-placeholder-img">
+
+
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+	{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Recipes
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {{recipe.name}}
+    </h1>
+
+    <h3>Ingridients:</h3>
+    <p>
+        {{recipe.ingridients}}
+    </p>
+    <h3>
+        How to:
+    </h3>
+    <p>
+        {{recipe.howTo}}
+    </p>
+    <a class="btn btn-success" href="/recipes/my_recipes/edit/{{ recipe.id }}">
+        Edit Recipe 
+    </a>
+        <a class="btn btn-danger" href="/recipes/my_recipes/delete/{{ recipe.id }}">
+        Delete Recipe 
+    </a>
+
+
+    
+{% endblock %}
