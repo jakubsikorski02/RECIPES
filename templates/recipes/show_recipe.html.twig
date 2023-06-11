@@ -5,25 +5,23 @@
 {% endblock %}
 
 {% block body %}
-    <div class="mx-auto">
-    <h1>
-        {{recipe.name}}
-    </h1>
-
-    <img src="{{ recipe.imagePath }}" alt="imagePicture" class="img-fluid bd-placeholder-img">
-
-    <h3>Ingridients:</h3>
-    <p>
-        {{recipe.ingridients}}
-    </p>
-    <h3>
-        How to:
-    </h3>
-    <p>
-        {{recipe.howTo}}
-    </p>
-
-
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="text-center">
+        <h1>{{ recipe.name }}</h1>
+        <img src="{{ recipe.imagePath }}" alt="Recipe Image" class="img-fluid bd-placeholder-img mt-4">
+      </div>
+      
+      <div class="mt-4">
+        <h3>Ingredients:</h3>
+        <p>{{ recipe.ingridients }}</p>
+        
+        <h3>How to:</h3>
+        <p>{{ recipe.howTo }}</p>
+      </div>
     </div>
+  </div>
+</div>
     
 {% endblock %}

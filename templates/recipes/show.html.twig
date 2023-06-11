@@ -5,27 +5,25 @@
 {% endblock %}
 
 {% block body %}
-    <h1>
-        {{recipe.name}}
-    </h1>
-
-    <h3>Ingridients:</h3>
-    <p>
-        {{recipe.ingridients}}
-    </p>
-    <h3>
-        How to:
-    </h3>
-    <p>
-        {{recipe.howTo}}
-    </p>
-    <a class="btn btn-success" href="/recipes/my_recipes/edit/{{ recipe.id }}">
-        Edit Recipe 
-    </a>
-        <a class="btn btn-danger" href="/recipes/my_recipes/delete/{{ recipe.id }}">
-        Delete Recipe 
-    </a>
-
+    
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <h1>{{ recipe.name }}</h1>
+      
+      <h3>Ingredients:</h3>
+      <p>{{ recipe.ingridients }}</p>
+      
+      <h3>How to:</h3>
+      <p>{{ recipe.howTo }}</p>
+      
+      <div class="mt-4">
+        <a class="btn btn-success me-2" href="/recipes/my_recipes/edit/{{ recipe.id }}">Edit Recipe</a>
+        <a class="btn btn-danger" href="/recipes/my_recipes/delete/{{ recipe.id }}">Delete Recipe</a>
+      </div>
+    </div>
+  </div>
+</div>
 
     
 {% endblock %}
