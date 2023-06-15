@@ -43,17 +43,23 @@
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 									Account
 								</a>
-								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<li>
-										<a class="dropdown-item" href="/recipes/my_recipes">My Recipes</a>
-									</li>
-									<li><hr class="dropdown-divider"></li>
-									<li>
-										<a class="dropdown-item" href="/{{app.user ? 'logout' : 'login'}}">
-											{{ app.user ? 'Logout' : 'Login' }}
-										</a>
-									</li>
-								</ul>
+								{% if app.user %}
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li>
+											<a class="dropdown-item" href="/recipes/my_recipes">My Recipes</a>
+										</li>
+										<li><hr class="dropdown-divider"></li>
+										<li>
+											<a class="dropdown-item" href="/logout">Logout</a>
+										</li>
+									</ul>
+								{% else %}
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li>
+											<a class="dropdown-item" href="/login">Login</a>
+										</li>
+									</ul>
+								{% endif %}
 							</li>
 						</ul>
 					</div>

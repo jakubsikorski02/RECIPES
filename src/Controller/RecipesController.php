@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
+use App\Entity\Review;
 use App\Repository\RecipeRepository;
 use App\Form\RecipeFormType;
+use App\Repository\ReviewRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class RecipesController extends AbstractController
 {
@@ -19,9 +22,10 @@ class RecipesController extends AbstractController
     private $recipeRepository;
     private $security;
 
-    public function __construct(RecipeRepository $recipeRepository, EntityManagerInterface $em, Security $security,)
+    public function __construct(RecipeRepository $recipeRepository, EntityManagerInterface $em, Security $security, ReviewRepository $reviewRepository)
     {
         $this->recipeRepository = $recipeRepository;
+        $this->reviewRepository = $reviewRepository;
         $this->security = $security;
         $this->em = $em;
     }
@@ -40,15 +44,15 @@ class RecipesController extends AbstractController
     #[Route('/recipes/contact', name: 'contact')]
     public function contact(): Response
     {
-        
+
         return $this->render('recipes/contact.html.twig');
     }
 
-    
+
     #[Route('/recipes/settings', name: 'settings')]
     public function settings(): Response
     {
-        
+
         return $this->render('recipes/settings.html.twig');
     }
 
@@ -58,14 +62,14 @@ class RecipesController extends AbstractController
     public function myRecipes(): Response
     {
         $user = $this->security->getUser();
-    
+
         $recipes = $user->getRecipes();
-        
+
         return $this->render('recipes/my_recipes.html.twig', [
             'recipes' => $recipes
         ]);
     }
-    
+
 
     #[Route('/recipes/create', name: 'create_recipe')]
     public function create(Request $request): Response
@@ -104,14 +108,32 @@ class RecipesController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-
     #[Route('/recipes/{id}', methods: ['GET'], name: 'show_recipe')]
     public function showRecipe($id): Response
     {
         $recipe = $this->recipeRepository->find($id);
+    
+        $author = $recipe->getUser()->first();
+    
+        $reviews = $this->reviewRepository->findAll();
 
+        
+        $matchingReviews = [];
+
+        foreach ($reviews as $review) {
+            $reviewRecipes = $review->getRecipe();
+            foreach ($reviewRecipes as $reviewRecipe) {
+                if ($reviewRecipe === $recipe) {
+                    $matchingReviews[] = $review;
+                }
+            }
+        }
+        
+        // dd($matchingReviews);
         return $this->render('recipes/show_recipe.html.twig', [
-            'recipe' => $recipe
+            'recipe' => $recipe,
+            'author' => $author,
+            'reviews' => $matchingReviews,
         ]);
     }
 
@@ -166,7 +188,7 @@ class RecipesController extends AbstractController
         ]);
     }
 
-    #[Route('/recipes/my_recipes/delete/{id}', methods:['GET', 'DELETE'], name: 'delete')]
+    #[Route('/recipes/my_recipes/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete')]
     public function delete($id): Response
     {
         $recipe = $this->recipeRepository->find($id);
@@ -176,6 +198,34 @@ class RecipesController extends AbstractController
         return $this->redirectToRoute('recipes');
     }
 
+    #[Route('/recipes/save/{id}', methods: ['GET'], name: 'save')]
+    public function save($id): Response
+    {
+        $recipe = $this->recipeRepository->find($id);
+        $user = $this->security->getUser();
+        $reviews = $this->reviewRepository->findAll();
+
+        foreach ($reviews as $review) {
+            $reviewUsers = $review->getUser();
+            $reviewRecipes = $review->getRecipe();
+
+            foreach ($reviewUsers as $reviewUser) {
+                foreach ($reviewRecipes as $reviewRecipe) {
+                    if ($reviewUser === $user && $reviewRecipe === $recipe) {
+                        dd('You have already saved this recipe');
+                    }
+                }
+            }
+        }
+
+        $newReview = new Review();
+        $this->em->persist($newReview);
+        $newReview->addUser($user);
+        $newReview->addRecipe($recipe);
+        $this->em->flush();
+
+        return $this->redirectToRoute('recipes');
+    }
     #[Route('/recipes/my_recipes/{id}', methods: ['GET'], name: 'show')]
     public function show($id): Response
     {
@@ -185,5 +235,4 @@ class RecipesController extends AbstractController
             'recipe' => $recipe
         ]);
     }
-
 }

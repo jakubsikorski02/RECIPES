@@ -98,6 +98,7 @@ class Recipe
     {
         return $this->user;
     }
+    
 
     public function addUser(User $user): static
     {

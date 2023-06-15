@@ -10,6 +10,7 @@
     <div class="col-md-8 mx-auto">
       <div class="text-center">
         <h1>{{ recipe.name }}</h1>
+        <p>Author: {{ author.email }}</p>
         <img src="{{ recipe.imagePath }}" alt="Recipe Image" class="img-fluid bd-placeholder-img mt-4">
       </div>
       
@@ -20,6 +21,7 @@
         <h3>How to:</h3>
         <p>{{ recipe.howTo }}</p>
       </div>
+      <a class="btn btn-success" href="/recipes/save/{{ recipe.id }}">SAVE RECIPE (+{{ reviews|length }}) </a>
     </div>
   </div>
 </div>
