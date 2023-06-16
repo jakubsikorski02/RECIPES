@@ -108,13 +108,39 @@ class RecipesController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/recipes/saved', name: 'saved')]
+    public function saved(): Response
+    {
+        $user = $this->security->getUser();
+        $reviews = $this->reviewRepository->findAll();
+        $savedRecipes = [];
+
+        foreach ($reviews as $review) {
+            $reviewUsers = $review->getUser();
+            $reviewRecipes = $review->getRecipe();
+
+            foreach ($reviewUsers as $reviewUser) {
+                foreach ($reviewRecipes as $reviewRecipe) {
+                    if ($reviewUser === $user) {
+                        $savedRecipes[] = $reviewRecipe;
+                    }
+                }
+            }
+        }
+
+
+        return $this->render('recipes/saved.html.twig', [
+            'savedRecipes' => $savedRecipes,
+        ]);
+    }
+
     #[Route('/recipes/{id}', methods: ['GET'], name: 'show_recipe')]
     public function showRecipe($id): Response
     {
         $recipe = $this->recipeRepository->find($id);
-    
         $author = $recipe->getUser()->first();
-    
+        $user = $this->security->getUser();
         $reviews = $this->reviewRepository->findAll();
 
         
@@ -122,6 +148,8 @@ class RecipesController extends AbstractController
 
         foreach ($reviews as $review) {
             $reviewRecipes = $review->getRecipe();
+            
+
             foreach ($reviewRecipes as $reviewRecipe) {
                 if ($reviewRecipe === $recipe) {
                     $matchingReviews[] = $review;
@@ -129,11 +157,26 @@ class RecipesController extends AbstractController
             }
         }
         
-        // dd($matchingReviews);
+        $isSaved = false;
+        
+        foreach ($reviews as $review) {
+            $reviewUsers = $review->getUser();
+            $reviewRecipes = $review->getRecipe();
+    
+            foreach ($reviewUsers as $reviewUser) {
+                foreach ($reviewRecipes as $reviewRecipe) {
+                    if ($reviewUser === $user && $reviewRecipe === $recipe) {
+                        $isSaved = true;
+                    }
+                }
+            }
+        }
+        
         return $this->render('recipes/show_recipe.html.twig', [
             'recipe' => $recipe,
+            'isSaved' => $isSaved,
             'author' => $author,
-            'reviews' => $matchingReviews,
+            'reviews' => $matchingReviews
         ]);
     }
 
@@ -188,6 +231,7 @@ class RecipesController extends AbstractController
         ]);
     }
 
+
     #[Route('/recipes/my_recipes/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete')]
     public function delete($id): Response
     {
@@ -212,7 +256,7 @@ class RecipesController extends AbstractController
             foreach ($reviewUsers as $reviewUser) {
                 foreach ($reviewRecipes as $reviewRecipe) {
                     if ($reviewUser === $user && $reviewRecipe === $recipe) {
-                        dd('You have already saved this recipe');
+                        return $this->redirectToRoute('show_recipe', ['id' => $id]);
                     }
                 }
             }
@@ -224,8 +268,10 @@ class RecipesController extends AbstractController
         $newReview->addRecipe($recipe);
         $this->em->flush();
 
-        return $this->redirectToRoute('recipes');
+        return $this->redirectToRoute('show_recipe', ['id' => $id]);
     }
+
+
     #[Route('/recipes/my_recipes/{id}', methods: ['GET'], name: 'show')]
     public function show($id): Response
     {

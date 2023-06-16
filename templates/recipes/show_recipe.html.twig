@@ -21,7 +21,17 @@
         <h3>How to:</h3>
         <p>{{ recipe.howTo }}</p>
       </div>
-      <a class="btn btn-success" href="/recipes/save/{{ recipe.id }}">SAVE RECIPE (+{{ reviews|length }}) </a>
+  {% if app.user %}
+
+  {% if isSaved %}
+    <p class="btn btn-secondary">RECIPE SAVED (+{{ reviews|length }})</p>  
+  {% else %}
+     <a class="btn btn-success" href="/recipes/save/{{ recipe.id }}">SAVE RECIPE (+{{ reviews|length }})</a>  
+  {% endif %}
+  {% else %}
+    <a class="btn btn-primary" href="/login">Log in</a>  
+  {% endif %}
+
     </div>
   </div>
 </div>
