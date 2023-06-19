@@ -26,7 +26,7 @@ class RecipeFormType extends AbstractType
             ->add('ingridients', TextType::class, [
                 'attr' => array(
                     'class' => 'form-control',
-                    'placeholder' => 'Enter ingridients'
+                    'placeholder' => 'Enter ingredients'
                 ),
                 'required' => false,
                 'label' => false

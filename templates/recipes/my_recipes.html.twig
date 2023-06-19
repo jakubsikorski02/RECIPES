@@ -8,26 +8,32 @@
 
 
 	<div class="row mx-auto">
-    <h1>My Recipes ({{recipes|length}})</h1>
-	{% for recipe in recipes %}
-    <div class="row">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          {# <strong class="d-inline-block mb-2 text-primary">World</strong> #}
-          <h3 class="mb-0">{{ recipe.name }}</h3>
-          {# <div class="mb-1 text-muted">Nov 12</div> #}
-          <p class="card-text mb-auto">{{recipe.howTo}}</p>
-          <a href="/recipes/my_recipes/{{recipe.id}}" class="stretched-link">Edit or delete</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-        
-		  	<img src="{{ recipe.imagePath }}" alt="imagePicture" class="img-fluid bd-placeholder-img">
+		<h1>My Recipes ({{recipes|length}})</h1>
+		{% if recipes %}
+			{% for recipe in recipes %}
+				<div class="row">
+					<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div
+							class="col p-4 d-flex flex-column position-static">
+							{# <strong class="d-inline-block mb-2 text-primary">World</strong> #}
+							<h3 class="mb-0">{{ recipe.name }}</h3>
+							{# <div class="mb-1 text-muted">Nov 12</div> #}
+							<p class="card-text mb-auto">{{recipe.howTo}}</p>
+							<a href="/recipes/my_recipes/{{recipe.id}}" class="stretched-link">Edit or delete</a>
+						</div>
+						<div class="col-auto d-none d-lg-block">
+
+							<img src="{{ recipe.imagePath }}" alt="imagePicture" class="img-fluid bd-placeholder-img">
 
 
-        </div>
-      </div>
-    </div>
-	{% endfor %}
-  </div>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<p>No recipes found, add recipe.</p>
+			{% endfor %}
+
+		{% endif %}
+	</div>
 
 {% endblock %}
