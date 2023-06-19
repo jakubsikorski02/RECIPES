@@ -55,16 +55,3 @@ class RecipeFormType extends AbstractType
         ]);
     }
 }
-
-
-
-// ->add('ingridients', CollectionType::class, [
-//     'entry_type' => TextType::class,
-//     'allow_add' => true,
-//     'attr' => [
-//         'class' => 'form-control',
-//         'placeholder' => 'Enter ingredient'
-//     ],
-//     'required' => false,
-//     'label' => false,
-// ])

@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    	<div class="row mx-auto">
+
+		<div class="row mx-auto">
+		<h1>Saved Recipes ({{savedRecipes|length}})</h1>
 		 {% for savedRecipe in savedRecipes %}
 			<div class="col-md-6 mb-4">
 				<div class="card h-100">
